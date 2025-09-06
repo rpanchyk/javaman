@@ -1,5 +1,9 @@
 package main
 
+import (
+	"github.com/rpanchyk/javaman/cmd"
+)
+
 func main() {
-	println("Hello World")
+	cmd.Execute()
 }

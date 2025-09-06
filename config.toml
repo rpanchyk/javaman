@@ -1,0 +1,25 @@
+# URL where Java versions are looked.
+release_url = "https://www.java.com/releases/releases.json"
+
+# Directory where SDK archives are downloaded.
+# Can be absolute or relative path.
+download_dir = "./downloads"
+
+# Directory where SDKs are installed.
+# Typically, it is JAVA_HOME env.
+# Can be absolute or relative path.
+install_dir = "./sdk"
+
+# Max versions number to show in list.
+list_limit = 10
+
+# File with list of cached SDKs in JSON format.
+list_cache_file = "./cache.json"
+
+# Cache expiration time in minutes.
+list_cache_ttl = 1440
+
+# Defines in which file is added loading config string.
+# Non-windows property.
+# Examples: ~/.profile, ~/.bashrc, ~/.zshrc, etc.
+unix_shell_config = "~/.profile"

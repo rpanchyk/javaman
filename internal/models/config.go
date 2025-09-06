@@ -1,0 +1,11 @@
+package models
+
+type Config struct {
+	ReleaseURL      string `mapstructure:"release_url"`
+	DownloadDir     string `mapstructure:"download_dir"`
+	InstallDir      string `mapstructure:"install_dir"`
+	ListLimit       int    `mapstructure:"list_limit"`
+	ListCacheFile   string `mapstructure:"list_cache_file"`
+	ListCacheTTL    int    `mapstructure:"list_cache_ttl"`
+	UnixShellConfig string `mapstructure:"unix_shell_config"`
+}
