@@ -2,6 +2,7 @@ package lister
 
 import (
 	"fmt"
+	"runtime"
 
 	"github.com/rpanchyk/javaman/internal/models"
 )
@@ -76,6 +77,14 @@ func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error)
 		if count > f.config.ListLimit {
 			break
 		}
+
+		if f.config.ListFilterOs && runtime.GOOS != sdk.Os.GoOs() {
+			continue
+		}
+		if f.config.ListFilterArch && runtime.GOARCH != sdk.Arch.GoArch() {
+			continue
+		}
+
 		res = append(res, sdk)
 		ver = sdk.Version
 	}

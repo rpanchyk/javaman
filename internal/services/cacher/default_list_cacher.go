@@ -35,13 +35,13 @@ func (c DefaultListCacher) Get() ([]models.Sdk, error) {
 		return nil, nil
 	}
 
-	bytes, err := os.ReadFile(c.config.ListCacheFile)
+	data, err := os.ReadFile(c.config.ListCacheFile)
 	if err != nil {
 		return nil, fmt.Errorf("cannot read cache file %s: %w", c.config.ListCacheFile, err)
 	}
 
-	sdks := []models.Sdk{}
-	if err := json.Unmarshal(bytes, &sdks); err != nil {
+	var sdks []models.Sdk
+	if err := json.Unmarshal(data, &sdks); err != nil {
 		return nil, fmt.Errorf("cannot decode cache from file %s: %w", c.config.ListCacheFile, err)
 	}
 
