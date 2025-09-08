@@ -3,6 +3,7 @@ package lister
 import (
 	"fmt"
 	"regexp"
+	"runtime"
 	"slices"
 	"strings"
 
@@ -125,13 +126,13 @@ func (f DefaultListFetcher) getMicrosoftSdks() ([]models.Sdk, error) {
 			return nil, fmt.Errorf("error making http request, status: %d", status)
 		}
 
-		//<a href="https://aka.ms/download-jdk/microsoft-jdk-11.0.14.1_1-31205-linux-x64.tar.gz" data-linktype="external">microsoft-jdk-11.0.14.1_1-31205-linux-x64.tar.gz</a>
+		// <a href="https://aka.ms/download-jdk/microsoft-jdk-11.0.14.1_1-31205-linux-x64.tar.gz" data-linktype="external">microsoft-jdk-11.0.14.1_1-31205-linux-x64.tar.gz</a>
 		// Group 1: https://aka.ms/download-jdk/microsoft-jdk-11.0.14.1_1-31205-linux-x64.tar.gz
 		// Group 2: 11.0.14.1_1-31205
 		// Group 3: linux
 		// Group 4: x64
 
-		//<a href="https://aka.ms/download-jdk/microsoft-jdk-21.0.8-macos-x64.tar.gz" data-linktype="external">microsoft-jdk-21.0.8-macos-x64.tar.gz</a>
+		// <a href="https://aka.ms/download-jdk/microsoft-jdk-21.0.8-macos-x64.tar.gz" data-linktype="external">microsoft-jdk-21.0.8-macos-x64.tar.gz</a>
 		// Group 1: https://aka.ms/download-jdk/microsoft-jdk-21.0.8-macos-x64.tar.gz
 		// Group 2: 21.0.8
 		// Group 3: macos
@@ -179,6 +180,14 @@ func (f DefaultListFetcher) getMicrosoftSdks() ([]models.Sdk, error) {
 				Os:      os,
 				Arch:    arch,
 			}
+
+			if f.config.ListFilterOs && runtime.GOOS != sdk.Os.GoOs() {
+				continue
+			}
+			if f.config.ListFilterArch && runtime.GOARCH != sdk.Arch.GoArch() {
+				continue
+			}
+
 			if !slices.Contains(sdks, sdk) {
 				sdks = append(sdks, sdk)
 			}

@@ -41,7 +41,7 @@ var listCmd = &cobra.Command{
 			if sdk.IsInstalled {
 				installedMarker = "[installed]"
 			}
-			fmt.Printf("%s %-10s %-18s %-10s %-10s %-15s %s\n",
+			fmt.Printf("%s %s-%-20s %-10s %-10s %-15s %s\n",
 				defaultMarker, sdk.Vendor, sdk.Version, sdk.Os, sdk.Arch, downloadedMarker, installedMarker)
 		}
 	},

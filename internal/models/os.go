@@ -23,6 +23,20 @@ func (o Os) String() string {
 	}
 }
 
+// https://github.com/golang/go/blob/master/src/internal/syslist/syslist.go
+func (o Os) GoOs() string {
+	switch o {
+	case Linux:
+		return "linux"
+	case Macos:
+		return "darwin"
+	case Windows:
+		return "windows"
+	default:
+		return fmt.Sprintf("Unknown Os %d", o)
+	}
+}
+
 func (o *Os) MarshalJSON() ([]byte, error) {
 	return []byte("\"" + o.String() + "\""), nil
 }
