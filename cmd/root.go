@@ -5,9 +5,14 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 
+	"github.com/rpanchyk/javaman/internal/clients"
 	"github.com/rpanchyk/javaman/internal/models"
+	"github.com/rpanchyk/javaman/internal/services/cacher"
+	"github.com/rpanchyk/javaman/internal/services/lister"
+	"github.com/rpanchyk/javaman/internal/services/lister/vendors"
 	"github.com/rpanchyk/javaman/internal/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -38,7 +43,7 @@ func catchSignal() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig)
+	cobra.OnInitialize(initConfig, initFetcher)
 }
 
 func initConfig() {
@@ -79,4 +84,22 @@ func toAbsPath(path string) string {
 		return filepath.Join(filepath.Dir(configFile), path)
 	}
 	return path
+}
+
+func initFetcher() {
+	fetchers := make([]lister.ListFetcher, 0)
+	for _, vendor := range utils.Config.Vendors {
+		switch strings.ToLower(strings.TrimSpace(vendor)) {
+		case "microsoft":
+			fetchers = append(fetchers, vendors.NewMicrosoftListFetcher(
+				&utils.Config,
+				&clients.SimpleHttpClient{},
+			))
+		}
+	}
+
+	utils.DefaultListFetcher = *lister.NewDefaultListFetcher(
+		fetchers,
+		cacher.NewDefaultListCacher(&utils.Config),
+	)
 }
