@@ -90,8 +90,8 @@ func (f MicrosoftListFetcher) Fetch() ([]models.Sdk, error) {
 
 			sdk := models.Sdk{
 				Vendor:  "microsoft",
-				URL:     parts[1],
-				Version: parts[2],
+				URL:     strings.TrimSpace(parts[1]),
+				Version: strings.TrimSpace(parts[2]),
 				Os:      os,
 				Arch:    arch,
 			}
