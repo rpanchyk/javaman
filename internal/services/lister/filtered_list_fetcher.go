@@ -2,6 +2,9 @@ package lister
 
 import (
 	"fmt"
+	"os"
+	"path"
+	"path/filepath"
 	"runtime"
 
 	"github.com/rpanchyk/javaman/internal/models"
@@ -32,7 +35,8 @@ func (f FilteredListFetcher) Fetch() ([]models.Sdk, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error filtering SDKs: %w", err)
 	}
-	return filtered, nil
+
+	return f.enrichSdks(filtered)
 }
 
 func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error) {
@@ -91,4 +95,20 @@ func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error)
 
 	clear(sdks)
 	return res, nil
+}
+
+func (f FilteredListFetcher) enrichSdks(sdks []models.Sdk) ([]models.Sdk, error) {
+	for i := 0; i < len(sdks); i++ {
+		filePath := filepath.Join(f.config.DownloadDir, path.Base(sdks[i].URL))
+		if info, err := os.Stat(filePath); err == nil && !info.IsDir() {
+			sdks[i].FilePath = filePath
+			sdks[i].IsDownloaded = true
+		}
+
+		installDir := filepath.Join(f.config.InstallDir, sdks[i].Vendor+"-"+sdks[i].Version)
+		if info, err := os.Stat(installDir); err == nil && info.IsDir() {
+			sdks[i].IsInstalled = true
+		}
+	}
+	return sdks, nil
 }
