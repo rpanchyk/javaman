@@ -12,7 +12,7 @@ build: deps build-linux-amd64 build-macosx-amd64 build-macosx-arm64 build-window
 
 # Dependencies
 deps:
-	go mod tidy && go mod vendor
+	go mod tidy && go mod download && go mod vendor
 
 # Linux
 build-linux-amd64:
