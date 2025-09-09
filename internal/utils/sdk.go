@@ -6,12 +6,11 @@ import (
 	"path"
 	"path/filepath"
 	"regexp"
-	"runtime"
 
 	"github.com/rpanchyk/javaman/internal/models"
 )
 
-func FindByVersion(version string, sdks []models.Sdk) (*models.Sdk, error) {
+func FindByVersion(version string, sdks []models.Sdk, config *models.Config) (*models.Sdk, error) {
 	r, err := regexp.Compile(`(\w+)-([0-9._\-]+)`)
 	if err != nil {
 		return nil, fmt.Errorf("error compile regexp: %w", err)
@@ -24,34 +23,22 @@ func FindByVersion(version string, sdks []models.Sdk) (*models.Sdk, error) {
 		sdkVersion = parts[2]
 	}
 
-	sdkOs := models.Linux
-	err = sdkOs.UnmarshalJSON([]byte(runtime.GOOS))
-	if err != nil {
-		return nil, fmt.Errorf("error resolve os: %w", err)
-	}
-
-	sdkArch := models.X64
-	err = sdkArch.UnmarshalJSON([]byte(runtime.GOARCH))
-	if err != nil {
-		return nil, fmt.Errorf("error resolve arch: %w", err)
-	}
-
 	for _, sdk := range sdks {
-		if sdk.Vendor == sdkVendor && sdk.Version == sdkVersion && sdk.Os == sdkOs && sdk.Arch == sdkArch {
-			return enrichSdk(&sdk)
+		if sdk.Vendor == sdkVendor && sdk.Version == sdkVersion && sdk.Os == CurrentOs() && sdk.Arch == CurrentArch() {
+			return enrichSdk(&sdk, config)
 		}
 	}
 	return nil, fmt.Errorf("version %s not found", version)
 }
 
-func enrichSdk(sdk *models.Sdk) (*models.Sdk, error) {
-	filePath := filepath.Join(Config.DownloadDir, path.Base(sdk.URL))
+func enrichSdk(sdk *models.Sdk, config *models.Config) (*models.Sdk, error) {
+	filePath := filepath.Join(config.DownloadDir, path.Base(sdk.URL))
 	if info, err := os.Stat(filePath); err == nil && !info.IsDir() {
 		sdk.IsDownloaded = true
 		sdk.FilePath = filePath
 	}
 
-	installDir := filepath.Join(Config.InstallDir, sdk.Vendor+"-"+sdk.Version)
+	installDir := filepath.Join(config.InstallDir, sdk.Vendor+"-"+sdk.Version)
 	if info, err := os.Stat(installDir); err == nil && info.IsDir() {
 		sdk.IsInstalled = true
 	}

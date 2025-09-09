@@ -5,7 +5,8 @@ import "fmt"
 type Os int
 
 const (
-	Linux Os = iota
+	Unknown Os = iota
+	Linux
 	Macos
 	Windows
 )

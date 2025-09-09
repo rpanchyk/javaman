@@ -5,9 +5,9 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"runtime"
 
 	"github.com/rpanchyk/javaman/internal/models"
+	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type FilteredListFetcher struct {
@@ -82,10 +82,10 @@ func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error)
 			break
 		}
 
-		if f.config.ListFilterOs && runtime.GOOS != sdk.Os.GoOs() {
+		if f.config.ListFilterOs && sdk.Os != utils.CurrentOs() {
 			continue
 		}
-		if f.config.ListFilterArch && runtime.GOARCH != sdk.Arch.GoArch() {
+		if f.config.ListFilterArch && sdk.Arch != utils.CurrentArch() {
 			continue
 		}
 

@@ -9,11 +9,11 @@ import (
 	"syscall"
 
 	"github.com/rpanchyk/javaman/internal/clients"
+	"github.com/rpanchyk/javaman/internal/globals"
 	"github.com/rpanchyk/javaman/internal/models"
 	"github.com/rpanchyk/javaman/internal/services/cacher"
 	"github.com/rpanchyk/javaman/internal/services/lister"
 	"github.com/rpanchyk/javaman/internal/services/lister/vendors"
-	"github.com/rpanchyk/javaman/internal/utils"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -43,7 +43,7 @@ func catchSignal() {
 }
 
 func init() {
-	cobra.OnInitialize(initConfig, initFetcher)
+	cobra.OnInitialize(initConfig, initListFetcher)
 }
 
 func initConfig() {
@@ -61,8 +61,8 @@ func initConfig() {
 		os.Exit(1)
 	}
 
-	utils.Config = getConfig()
-	fmt.Printf("Config: %+v\n", utils.Config)
+	globals.Config = getConfig()
+	fmt.Printf("Config: %+v\n", globals.Config)
 }
 
 func getConfig() models.Config {
@@ -86,20 +86,20 @@ func toAbsPath(path string) string {
 	return path
 }
 
-func initFetcher() {
+func initListFetcher() {
 	fetchers := make([]lister.ListFetcher, 0)
-	for _, vendor := range utils.Config.Vendors {
+	for _, vendor := range globals.Config.Vendors {
 		switch strings.ToLower(strings.TrimSpace(vendor)) {
 		case "microsoft":
 			fetchers = append(fetchers, vendors.NewMicrosoftListFetcher(
-				&utils.Config,
+				&globals.Config,
 				&clients.SimpleHttpClient{},
 			))
 		}
 	}
 
-	utils.DefaultListFetcher = *lister.NewDefaultListFetcher(
+	globals.DefaultListFetcher = *lister.NewDefaultListFetcher(
 		fetchers,
-		cacher.NewDefaultListCacher(&utils.Config),
+		cacher.NewDefaultListCacher(&globals.Config),
 	)
 }

@@ -1,4 +1,4 @@
-package utils
+package globals
 
 import "github.com/rpanchyk/javaman/internal/services/lister"
 

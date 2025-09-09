@@ -1,11 +1,10 @@
 package models
 
-import "fmt"
-
 type Arch int
 
 const (
-	X64 Arch = iota
+	UNKNOWN Arch = iota
+	X64
 	ARM
 )
 
@@ -16,11 +15,10 @@ func (a Arch) String() string {
 	case ARM:
 		return "arm"
 	default:
-		return fmt.Sprintf("Unknown Arch %d", a)
+		return "unknown"
 	}
 }
 
-// https://github.com/golang/go/blob/master/src/internal/syslist/syslist.go
 func (a Arch) GoArch() string {
 	switch a {
 	case X64:
@@ -28,7 +26,7 @@ func (a Arch) GoArch() string {
 	case ARM:
 		return "arm64"
 	default:
-		return fmt.Sprintf("Unknown Arch %d", a)
+		return "unknown"
 	}
 }
 

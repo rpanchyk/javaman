@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/rpanchyk/javaman/internal/globals"
 	"github.com/rpanchyk/javaman/internal/services/lister"
-	"github.com/rpanchyk/javaman/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -14,8 +14,8 @@ var listCmd = &cobra.Command{
 	Short: "Shows list of available Java versions",
 	Run: func(cmd *cobra.Command, args []string) {
 		listFetcher := lister.NewFilteredListFetcher(
-			&utils.Config,
-			&utils.DefaultListFetcher,
+			&globals.Config,
+			&globals.DefaultListFetcher,
 		)
 		sdks, err := listFetcher.Fetch()
 		if err != nil {

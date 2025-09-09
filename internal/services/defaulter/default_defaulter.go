@@ -29,7 +29,7 @@ func (d DefaultDefaulter) Default(version string) error {
 		return fmt.Errorf("cannot get list of SDKs: %w", err)
 	}
 
-	sdk, err := utils.FindByVersion(version, sdks)
+	sdk, err := utils.FindByVersion(version, sdks, d.config)
 	if err != nil {
 		return fmt.Errorf("cannot find specified SDK: %w", err)
 	}

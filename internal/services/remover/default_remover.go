@@ -32,7 +32,7 @@ func (r DefaultRemover) Remove(version string, removeDownloaded, removeInstalled
 		return fmt.Errorf("cannot get list of SDKs: %w", err)
 	}
 
-	sdk, err := utils.FindByVersion(version, sdks)
+	sdk, err := utils.FindByVersion(version, sdks, r.config)
 	if err != nil {
 		return fmt.Errorf("cannot find specified SDK: %w", err)
 	}

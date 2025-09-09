@@ -5,8 +5,8 @@ import (
 	"os"
 
 	"github.com/rpanchyk/javaman/internal/clients"
+	"github.com/rpanchyk/javaman/internal/globals"
 	"github.com/rpanchyk/javaman/internal/services/downloader"
-	"github.com/rpanchyk/javaman/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -16,8 +16,8 @@ var downloadCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		downloader := downloader.NewDefaultDownloader(
-			&utils.Config,
-			&utils.DefaultListFetcher,
+			&globals.Config,
+			&globals.DefaultListFetcher,
 			&clients.SimpleHttpSaver{},
 		)
 		if _, err := downloader.Download(args[0]); err != nil {
