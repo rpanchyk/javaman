@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+
+	"github.com/schollz/progressbar/v3"
 )
 
 type SimpleHttpSaver struct {
@@ -29,7 +31,12 @@ func (s SimpleHttpSaver) Save(url, filePath string) error {
 	}
 	defer file.Close()
 
-	if _, err = io.Copy(io.MultiWriter(file), resp.Body); err != nil {
+	bar := progressbar.DefaultBytes(
+		resp.ContentLength,
+		"Downloading",
+	)
+
+	if _, err = io.Copy(io.MultiWriter(file, bar), resp.Body); err != nil {
 		return fmt.Errorf("cannot save file: %s error: %w", filePath, err)
 	}
 	return nil
