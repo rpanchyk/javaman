@@ -101,13 +101,17 @@ func (f FilteredListFetcher) enrichSdks(sdks []models.Sdk) ([]models.Sdk, error)
 	for i := 0; i < len(sdks); i++ {
 		filePath := filepath.Join(f.config.DownloadDir, path.Base(sdks[i].URL))
 		if info, err := os.Stat(filePath); err == nil && !info.IsDir() {
-			sdks[i].FilePath = filePath
 			sdks[i].IsDownloaded = true
+			sdks[i].FilePath = filePath
 		}
 
 		installDir := filepath.Join(f.config.InstallDir, sdks[i].Vendor+"-"+sdks[i].Version)
 		if info, err := os.Stat(installDir); err == nil && info.IsDir() {
 			sdks[i].IsInstalled = true
+		}
+
+		if envVar, ok := os.LookupEnv("JAVA_HOME"); ok && envVar == installDir {
+			sdks[i].IsDefault = true
 		}
 	}
 	return sdks, nil

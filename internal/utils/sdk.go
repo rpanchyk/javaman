@@ -2,6 +2,9 @@ package utils
 
 import (
 	"fmt"
+	"os"
+	"path"
+	"path/filepath"
 	"regexp"
 	"runtime"
 
@@ -35,8 +38,27 @@ func FindByVersion(version string, sdks []models.Sdk) (*models.Sdk, error) {
 
 	for _, sdk := range sdks {
 		if sdk.Vendor == sdkVendor && sdk.Version == sdkVersion && sdk.Os == sdkOs && sdk.Arch == sdkArch {
-			return &sdk, nil
+			return enrichSdk(&sdk)
 		}
 	}
 	return nil, fmt.Errorf("version %s not found", version)
+}
+
+func enrichSdk(sdk *models.Sdk) (*models.Sdk, error) {
+	filePath := filepath.Join(Config.DownloadDir, path.Base(sdk.URL))
+	if info, err := os.Stat(filePath); err == nil && !info.IsDir() {
+		sdk.IsDownloaded = true
+		sdk.FilePath = filePath
+	}
+
+	installDir := filepath.Join(Config.InstallDir, sdk.Vendor+"-"+sdk.Version)
+	if info, err := os.Stat(installDir); err == nil && info.IsDir() {
+		sdk.IsInstalled = true
+	}
+
+	if envVar, ok := os.LookupEnv("JAVA_HOME"); ok && envVar == installDir {
+		sdk.IsDefault = true
+	}
+
+	return sdk, nil
 }
