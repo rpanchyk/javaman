@@ -1,7 +1,6 @@
 package models
 
 type Config struct {
-	ReleaseURL      string   `mapstructure:"release_url"`
 	DownloadDir     string   `mapstructure:"download_dir"`
 	InstallDir      string   `mapstructure:"install_dir"`
 	Vendors         []string `mapstructure:"vendors"`

@@ -1,6 +1,3 @@
-# URL where Java versions are looked.
-release_url = "https://www.java.com/releases/releases.json"
-
 # Directory where SDK archives are downloaded.
 # Can be absolute or relative path.
 download_dir = "./downloads"
@@ -11,10 +8,10 @@ download_dir = "./downloads"
 install_dir = "./sdks"
 
 # List of SDK providers
-vendors = [ "openjdk", "microsoft", "amazon" ]
+vendors = ["openjdk", "microsoft", "amazon"]
 
 # Max versions number to show in list.
-list_limit = 300
+list_limit = 25
 
 # File with list of cached SDKs in JSON format.
 list_cache_file = "./cache.json"
