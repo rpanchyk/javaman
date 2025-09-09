@@ -1,7 +1,5 @@
 package models
 
-import "fmt"
-
 type Os int
 
 const (
@@ -20,21 +18,7 @@ func (o Os) String() string {
 	case Windows:
 		return "windows"
 	default:
-		return fmt.Sprintf("Unknown Os %d", o)
-	}
-}
-
-// https://github.com/golang/go/blob/master/src/internal/syslist/syslist.go
-func (o Os) GoOs() string {
-	switch o {
-	case Linux:
-		return "linux"
-	case Macos:
-		return "darwin"
-	case Windows:
-		return "windows"
-	default:
-		return fmt.Sprintf("Unknown Os %d", o)
+		return "unknown"
 	}
 }
 
