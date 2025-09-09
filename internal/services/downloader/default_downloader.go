@@ -5,12 +5,11 @@ import (
 	"os"
 	"path"
 	"path/filepath"
-	"regexp"
-	"runtime"
 
 	"github.com/rpanchyk/javaman/internal/clients"
 	"github.com/rpanchyk/javaman/internal/models"
 	"github.com/rpanchyk/javaman/internal/services/lister"
+	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type DefaultDownloader struct {
@@ -37,7 +36,7 @@ func (d DefaultDownloader) Download(version string) (*models.Sdk, error) {
 		return nil, fmt.Errorf("cannot get list of SDKs: %w", err)
 	}
 
-	sdk, err := d.findSdk(version, sdks)
+	sdk, err := utils.FindByVersion(version, sdks)
 	if err != nil {
 		return nil, fmt.Errorf("cannot find specified SDK: %w", err)
 	}
@@ -53,39 +52,6 @@ func (d DefaultDownloader) Download(version string) (*models.Sdk, error) {
 
 	fmt.Printf("Downloaded SDK: %+v\n", *sdk)
 	return sdk, nil
-}
-
-func (d DefaultDownloader) findSdk(version string, sdks []models.Sdk) (*models.Sdk, error) {
-	r, err := regexp.Compile(`(\w+)-([0-9._\-]+)`)
-	if err != nil {
-		return nil, fmt.Errorf("error compile regexp: %w", err)
-	}
-
-	var sdkVendor string
-	var sdkVersion string
-	for _, parts := range r.FindAllStringSubmatch(version, -1) {
-		sdkVendor = parts[1]
-		sdkVersion = parts[2]
-	}
-
-	sdkOs := models.Linux
-	err = sdkOs.UnmarshalJSON([]byte(runtime.GOOS))
-	if err != nil {
-		return nil, fmt.Errorf("error resolve os: %w", err)
-	}
-
-	sdkArch := models.X64
-	err = sdkArch.UnmarshalJSON([]byte(runtime.GOARCH))
-	if err != nil {
-		return nil, fmt.Errorf("error resolve arch: %w", err)
-	}
-
-	for _, sdk := range sdks {
-		if sdk.Vendor == sdkVendor && sdk.Version == sdkVersion && sdk.Os == sdkOs && sdk.Arch == sdkArch {
-			return &sdk, nil
-		}
-	}
-	return nil, fmt.Errorf("version %s not found", version)
 }
 
 func (d DefaultDownloader) downloadSdk(url, dir string) (string, error) {
