@@ -22,7 +22,7 @@ jobs:
           - os: ubuntu-latest
             os_arch: macosx-arm64
             asset_name: ${{ github.event.repository.name }}-macosx-arm64.zip
-          - os: windows-latest
+          - os: ubuntu-latest
             os_arch: windows-amd64
             asset_name: ${{ github.event.repository.name }}-windows-amd64.zip
     runs-on: ubuntu-latest
@@ -30,8 +30,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: "1.22.2"
-          cache: true
+          go-version: "1.25.1"
 
       - name: Checkout
         uses: actions/checkout@v4
