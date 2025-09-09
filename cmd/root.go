@@ -87,13 +87,15 @@ func toAbsPath(path string) string {
 }
 
 func initListFetcher() {
+	httpClient := &clients.SimpleHttpClient{}
+
 	fetchers := make([]lister.ListFetcher, 0)
 	for _, vendor := range globals.Config.Vendors {
 		switch strings.ToLower(strings.TrimSpace(vendor)) {
 		case "microsoft":
 			fetchers = append(fetchers, vendors.NewMicrosoftListFetcher(
 				&globals.Config,
-				&clients.SimpleHttpClient{},
+				httpClient,
 			))
 		}
 	}
