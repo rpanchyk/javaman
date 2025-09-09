@@ -12,45 +12,24 @@ import (
 
 	"github.com/rpanchyk/javaman/internal/models"
 	"github.com/rpanchyk/javaman/internal/services/downloader"
-	"github.com/rpanchyk/javaman/internal/services/lister"
 )
 
 type DefaultInstaller struct {
-	config      *models.Config
-	listFetcher lister.ListFetcher
-	downloader  downloader.Downloader
+	config     *models.Config
+	downloader downloader.Downloader
 }
 
 func NewDefaultInstaller(
 	config *models.Config,
-	listFetcher lister.ListFetcher,
 	downloader downloader.Downloader) *DefaultInstaller {
 
 	return &DefaultInstaller{
-		config:      config,
-		listFetcher: listFetcher,
-		downloader:  downloader,
+		config:     config,
+		downloader: downloader,
 	}
 }
 
 func (i DefaultInstaller) Install(version string) error {
-	//sdk, err := i.downloader.Download(version)
-	//if err != nil {
-	//	return fmt.Errorf("cannot download specified SDK: %w", err)
-	//}
-	//fmt.Printf("Found SDK: %+v\n", *sdk)
-
-	//sdks, err := i.listFetcher.Fetch()
-	//if err != nil {
-	//	return fmt.Errorf("cannot get list of SDKs: %w", err)
-	//}
-	//
-	//sdk, err := utils.FindByVersion(version, sdks)
-	//if err != nil {
-	//	return fmt.Errorf("cannot find specified SDK: %w", err)
-	//}
-	//fmt.Printf("Found SDK: %+v\n", *sdk)
-
 	installDir := filepath.Join(i.config.InstallDir, version)
 	if _, err := os.Stat(installDir); os.IsNotExist(err) {
 		sdk, err := i.downloader.Download(version)
@@ -74,6 +53,8 @@ func (i DefaultInstaller) Install(version string) error {
 			if err := os.Rename(unpackedDir, installDir); err != nil {
 				return fmt.Errorf("cannot rename directory for specified SDK: %w", err)
 			}
+		} else {
+			return fmt.Errorf("unsupported file type: %s", sdk.FilePath)
 		}
 
 		fmt.Printf("SDK has been installed: %s\n", installDir)

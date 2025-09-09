@@ -18,7 +18,6 @@ var installCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		installer := installer.NewDefaultInstaller(
 			&globals.Config,
-			&globals.DefaultListFetcher,
 			downloader.NewDefaultDownloader(
 				&globals.Config,
 				&globals.DefaultListFetcher,
