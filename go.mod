@@ -1,6 +1,6 @@
 module github.com/rpanchyk/javaman
 
-go 1.25.1
+go 1.22.2
 
 require (
 	github.com/schollz/progressbar/v3 v3.18.0
