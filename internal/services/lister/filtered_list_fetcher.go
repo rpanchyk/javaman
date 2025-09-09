@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 
 	"github.com/rpanchyk/javaman/internal/models"
-	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type FilteredListFetcher struct {
@@ -80,13 +79,6 @@ func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error)
 		}
 		if count > f.config.ListLimit {
 			break
-		}
-
-		if f.config.ListFilterOs && sdk.Os != utils.CurrentOs() {
-			continue
-		}
-		if f.config.ListFilterArch && sdk.Arch != utils.CurrentArch() {
-			continue
 		}
 
 		res = append(res, sdk)

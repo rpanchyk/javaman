@@ -11,7 +11,7 @@ import (
 )
 
 func FindByVersion(version string, sdks []models.Sdk, config *models.Config) (*models.Sdk, error) {
-	r, err := regexp.Compile(`(\w+)-([0-9._\-]+)`)
+	r, err := regexp.Compile(`([\w\-]+)-([0-9._\-]+)`)
 	if err != nil {
 		return nil, fmt.Errorf("error compile regexp: %w", err)
 	}
@@ -23,8 +23,11 @@ func FindByVersion(version string, sdks []models.Sdk, config *models.Config) (*m
 		sdkVersion = parts[2]
 	}
 
+	currentOs := CurrentOs()
+	currentArch := CurrentArch()
+
 	for _, sdk := range sdks {
-		if sdk.Vendor == sdkVendor && sdk.Version == sdkVersion && sdk.Os == CurrentOs() && sdk.Arch == CurrentArch() {
+		if sdk.Vendor == sdkVendor && sdk.Version == sdkVersion && sdk.Os == currentOs && sdk.Arch == currentArch {
 			return enrichSdk(&sdk, config)
 		}
 	}

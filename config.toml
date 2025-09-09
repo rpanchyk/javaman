@@ -8,19 +8,13 @@ download_dir = "./downloads"
 # Directory where SDKs are installed.
 # Typically, it is a part of JAVA_HOME env.
 # Can be absolute or relative path.
-install_dir = "./sdk"
+install_dir = "./sdks"
 
 # List of SDK providers
 vendors = [ "openjdk", "microsoft", "amazon" ]
 
 # Max versions number to show in list.
 list_limit = 300
-
-# Show versions having same OS with current environment.
-list_filter_os = true
-
-# Show versions having same architecture with current environment.
-list_filter_arch = true
 
 # File with list of cached SDKs in JSON format.
 list_cache_file = "./cache.json"

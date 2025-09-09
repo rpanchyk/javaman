@@ -5,6 +5,7 @@ import (
 
 	"github.com/rpanchyk/javaman/internal/models"
 	"github.com/rpanchyk/javaman/internal/services/cacher"
+	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type DefaultListFetcher struct {
@@ -49,9 +50,24 @@ func (f DefaultListFetcher) fetchSdks() ([]models.Sdk, error) {
 		if err != nil {
 			return nil, fmt.Errorf("error getting sdks: %w", err)
 		}
-		sdks = append(sdks, vendorSdks...)
+		sdks = append(sdks, f.filterSdks(vendorSdks)...)
 	}
 
 	//fmt.Printf("SDKs: %+v\n", sdks)
 	return sdks, nil
+}
+
+func (f DefaultListFetcher) filterSdks(sdks []models.Sdk) []models.Sdk {
+	filteredSdks := make([]models.Sdk, 0)
+
+	currentOs := utils.CurrentOs()
+	currentArch := utils.CurrentArch()
+
+	for _, sdk := range sdks {
+		if sdk.Os == currentOs && sdk.Arch == currentArch {
+			filteredSdks = append(filteredSdks, sdk)
+		}
+	}
+
+	return filteredSdks
 }

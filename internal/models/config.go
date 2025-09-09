@@ -6,8 +6,6 @@ type Config struct {
 	InstallDir      string   `mapstructure:"install_dir"`
 	Vendors         []string `mapstructure:"vendors"`
 	ListLimit       int      `mapstructure:"list_limit"`
-	ListFilterOs    bool     `mapstructure:"list_filter_os"`
-	ListFilterArch  bool     `mapstructure:"list_filter_arch"`
 	ListCacheFile   string   `mapstructure:"list_cache_file"`
 	ListCacheTTL    int      `mapstructure:"list_cache_ttl"`
 	UnixShellConfig string   `mapstructure:"unix_shell_config"`
