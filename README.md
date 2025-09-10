@@ -6,20 +6,22 @@ A version manager for Java SDKs.
 
 The aim is to allow a quick and convenient management of Java workspace environment.
 
+![image](docs/list.png "List of versions")
+
 ## Prerequisites
 
-The tool is supported by following operating systems:
+The following operating systems are supported:
 
 - Linux
 - MacOS
 - Windows
 
-Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download installation file.
+Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download appropriate installation file.
 
 ## Installation
 
 1. Unpack installation archive to `$HOME` directory.
-2. Add `$HOME/.javaman` to `$PATH` environment variable for availability to run `javaman` systemwide.
+2. Add `$HOME/.javaman` to `$PATH` environment variable for availability to run `javaman` user (system) wide.
 
 ## Configuration
 
@@ -140,7 +142,8 @@ OpenJDK 64-Bit Server VM Microsoft
 ## Alternatives
 
 This project was fully inspired by [SDKMAN!](https://sdkman.io) but author required native support for Windows.
-Same results can be achieved by using Windows Package Manager
+
+The same results can be achieved by using Windows Package Manager
 such as [WinGet](https://github.com/microsoft/winget-cli) or similar.
 
 ## Disclaimer
