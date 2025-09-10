@@ -2,24 +2,28 @@
 
 A version manager for Java SDKs.
 
+## Goal
+
+The aim is to allow a quick and convenient management of Java workspace environment.
+
 ## Prerequisites
 
-The application is supported on such operating systems:
+The tool is supported by following operating systems:
 
 - Linux
 - MacOS
 - Windows
 
-Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download installation archive.
+Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download installation file.
 
 ## Installation
 
 1. Unpack installation archive to `$HOME` directory.
-2. Add `$HOME/.javaman` to `$PATH` environment variable.
+2. Add `$HOME/.javaman` to `$PATH` environment variable for availability to run `javaman` systemwide.
 
 ## Configuration
 
-File `$HOME/.javaman/config.toml` is single configuration file.
+File `$HOME/.javaman/config.toml` contains many configuration options.
 
 ```toml
 # Directory where SDK archives are downloaded.
@@ -31,7 +35,7 @@ download_dir = "./downloads"
 # Can be absolute or relative path.
 install_dir = "./sdks"
 
-# List of SDK providers
+# List of SDK providers.
 vendors = ["microsoft"]
 
 # Max versions number to show in list.
@@ -87,13 +91,13 @@ For example, let's add Java new version.
   ...
 ```
 
-2. Install `microsoft-21.0.3` version: `javaman install microsoft-21.0.3`
+2. Install specific version by executing `javaman install microsoft-21.0.3` command.
 
 ```
 SDK has been installed: /home/user/.javaman/sdks/microsoft-21.0.3
 ```
 
-3. Set `microsoft-21.0.3` version as default: `javaman default microsoft-21.0.3`
+3. Set installed version as default one by `javaman default microsoft-21.0.3` command.
 
 ```
 User environment is set to microsoft-21.0.3 version as default
@@ -101,7 +105,7 @@ User environment is set to microsoft-21.0.3 version as default
 
 4. (_Important!_) Restart terminal to apply changes.
 
-5. Check Go versions list again to see the asterisk near default version: `javaman list`
+5. Check versions list again to see the asterisk near the default one with `javaman list` command.
 
 ```
 * microsoft-21.0.3               windows    x64    [downloaded]    [installed]
@@ -113,10 +117,10 @@ User environment is set to microsoft-21.0.3 version as default
   ...
 ```
 
-6. Verify everything is expected: `java -version && echo $JAVA_HOME && echo $PATH`
+6. Verify everything is expected with `java -version && echo $JAVA_HOME && echo $PATH` command.
 
 ```
-openjdk version "21.0.3"
+OpenJDK version "21.0.3"
 OpenJDK Runtime Environment Microsoft
 OpenJDK 64-Bit Server VM Microsoft
 
@@ -130,12 +134,14 @@ OpenJDK 64-Bit Server VM Microsoft
 - Verify specified SDK version is available.
 - Download SDK archive from vendor page.
 - Extract archive to `{install_dir}/{version}` directory.
-- Set `JAVA_HOME` environment variable.
+- Set or update `JAVA_HOME` environment variable.
 - Add `JAVA_HOME/bin` to `PATH` environment variable.
 
 ## Alternatives
 
-This project was inspired by [SDKMAN!](https://sdkman.io) but author required native support for Windows.
+This project was fully inspired by [SDKMAN!](https://sdkman.io) but author required native support for Windows.
+Same results can be achieved by using Windows Package Manager
+such as [WinGet](https://github.com/microsoft/winget-cli) or similar.
 
 ## Disclaimer
 
