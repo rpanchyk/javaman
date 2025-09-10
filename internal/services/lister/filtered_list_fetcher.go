@@ -5,6 +5,10 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"regexp"
+	"sort"
+	"strconv"
+	"strings"
 
 	"github.com/rpanchyk/javaman/internal/models"
 )
@@ -39,36 +43,40 @@ func (f FilteredListFetcher) Fetch() ([]models.Sdk, error) {
 }
 
 func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error) {
-	//sort.Slice(sdks, func(i, j int) bool {
-	//	first := strings.Split(sdks[i].Version, ".")
-	//	second := strings.Split(sdks[j].Version, ".")
-	//
-	//	length := max(len(first), len(second))
-	//	for k := 0; k < length; k++ {
-	//		if len(first) > k+1 && len(second) <= k+1 { // 1.9.1 vs 1.9
-	//			return true
-	//		}
-	//
-	//		if len(first) <= k+1 && len(second) > k+1 { // 1.9 vs 1.9.1
-	//			return false
-	//		}
-	//
-	//		if first[k] != second[k] { // 1.9.1 vs 1.9.2
-	//			f, err := strconv.Atoi(first[k])
-	//			if err != nil {
-	//				panic(err)
-	//			}
-	//			s, err := strconv.Atoi(second[k])
-	//			if err != nil {
-	//				panic(err)
-	//			}
-	//			return f > s
-	//		}
-	//	}
-	//
-	//	return false
-	//})
-	// fmt.Printf("Sorted sdks: %v\n", sdks)
+	r := regexp.MustCompile("[^0-9]+")
+	sort.Slice(sdks, func(i, j int) bool {
+		firstVersion := r.ReplaceAllString(sdks[i].Version, ".")
+		secondVersion := r.ReplaceAllString(sdks[j].Version, ".")
+
+		first := strings.Split(firstVersion, ".")
+		second := strings.Split(secondVersion, ".")
+
+		length := max(len(first), len(second))
+		for k := 0; k < length; k++ {
+			if len(first) > k+1 && len(second) <= k+1 { // 1.9.1 vs 1.9
+				return true
+			}
+
+			if len(first) <= k+1 && len(second) > k+1 { // 1.9 vs 1.9.1
+				return false
+			}
+
+			if first[k] != second[k] { // 1.9.1 vs 1.9.2
+				f, err := strconv.Atoi(first[k])
+				if err != nil {
+					panic(err)
+				}
+				s, err := strconv.Atoi(second[k])
+				if err != nil {
+					panic(err)
+				}
+				return f > s
+			}
+		}
+
+		return false
+	})
+	//fmt.Printf("Sorted sdks: %v\n", sdks)
 
 	res := make([]models.Sdk, 0)
 	count := 0
