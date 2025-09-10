@@ -9,10 +9,17 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var (
+	number int
+)
+
 var listCmd = &cobra.Command{
 	Use:   "list",
 	Short: "Shows list of available Java versions",
 	Run: func(cmd *cobra.Command, args []string) {
+		if number > 0 {
+			globals.Config.ListLimit = number
+		}
 		listFetcher := lister.NewFilteredListFetcher(
 			&globals.Config,
 			&globals.DefaultListFetcher,
@@ -43,5 +50,6 @@ var listCmd = &cobra.Command{
 }
 
 func init() {
+	listCmd.Flags().IntVarP(&number, "number", "n", 0, "Number of the last available SDK versions to show")
 	RootCmd.AddCommand(listCmd)
 }
