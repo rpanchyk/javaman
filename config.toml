@@ -1,3 +1,6 @@
+# List of SDK providers.
+vendors = ["microsoft"]
+
 # Directory where SDK archives are downloaded.
 # Can be absolute or relative path.
 download_dir = "./downloads"
@@ -6,9 +9,6 @@ download_dir = "./downloads"
 # Typically, it is a part of JAVA_HOME env.
 # Can be absolute or relative path.
 install_dir = "./sdks"
-
-# List of SDK providers.
-vendors = ["microsoft"]
 
 # Max versions number to show in list.
 list_limit = 20

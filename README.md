@@ -28,6 +28,9 @@ Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download 
 File `$HOME/.javaman/config.toml` contains many configuration options.
 
 ```toml
+# List of SDK providers.
+vendors = ["microsoft"]
+
 # Directory where SDK archives are downloaded.
 # Can be absolute or relative path.
 download_dir = "./downloads"
@@ -37,11 +40,8 @@ download_dir = "./downloads"
 # Can be absolute or relative path.
 install_dir = "./sdks"
 
-# List of SDK providers.
-vendors = ["microsoft"]
-
 # Max versions number to show in list.
-list_limit = 25
+list_limit = 20
 
 # File with list of cached SDKs in JSON format.
 list_cache_file = "./cache.json"
