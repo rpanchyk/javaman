@@ -97,6 +97,11 @@ func initListFetcher() {
 				&globals.Config,
 				httpClient,
 			))
+		case "corretto":
+			fetchers = append(fetchers, vendors.NewAmazonListFetcher(
+				&globals.Config,
+				httpClient,
+			))
 		}
 	}
 

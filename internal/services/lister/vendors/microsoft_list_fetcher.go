@@ -26,6 +26,8 @@ func NewMicrosoftListFetcher(
 }
 
 func (f MicrosoftListFetcher) Fetch() ([]models.Sdk, error) {
+	fmt.Printf("Fetching microsoft SDKs ... ")
+
 	urls := []string{
 		"https://learn.microsoft.com/en-us/java/openjdk/download",
 		"https://learn.microsoft.com/en-us/java/openjdk/older-releases",
@@ -102,5 +104,6 @@ func (f MicrosoftListFetcher) Fetch() ([]models.Sdk, error) {
 		}
 	}
 
+	fmt.Println("OK")
 	return sdks, nil
 }
