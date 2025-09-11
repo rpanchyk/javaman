@@ -28,11 +28,11 @@ func (o *Os) MarshalJSON() ([]byte, error) {
 
 func (o *Os) UnmarshalJSON(data []byte) error {
 	switch string(data) {
-	case "linux":
+	case "\"linux\"":
 		*o = Linux
-	case "macos":
+	case "\"macos\"":
 		*o = Macos
-	case "windows":
+	case "\"windows\"":
 		*o = Windows
 	}
 	return nil

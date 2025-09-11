@@ -25,9 +25,9 @@ func (a *Arch) MarshalJSON() ([]byte, error) {
 
 func (a *Arch) UnmarshalJSON(data []byte) error {
 	switch string(data) {
-	case "x64":
+	case "\"x64\"":
 		*a = X64
-	case "arm":
+	case "\"arm\"":
 		*a = ARM
 	}
 	return nil
