@@ -51,16 +51,22 @@ func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error)
 		first := strings.Split(firstVersion, ".")
 		second := strings.Split(secondVersion, ".")
 
-		length := max(len(first), len(second))
-		for k := 0; k < length; k++ {
-			if len(first) > k+1 && len(second) <= k+1 { // 1.9.1 vs 1.9
-				return true
+		// 1.9.1 vs 1.8
+		// 1.8 vs 1.9.1
+		diff := len(first) - len(second)
+		if diff != 0 {
+			if diff > 0 {
+				for i := 0; i < diff; i++ {
+					second = append(second, "0")
+				}
+			} else {
+				for i := 0; i < -diff; i++ {
+					first = append(first, "0")
+				}
 			}
+		}
 
-			if len(first) <= k+1 && len(second) > k+1 { // 1.9 vs 1.9.1
-				return false
-			}
-
+		for k := 0; k < len(first); k++ {
 			if first[k] != second[k] { // 1.9.1 vs 1.9.2
 				f, err := strconv.Atoi(first[k])
 				if err != nil {
