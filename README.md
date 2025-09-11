@@ -16,12 +16,11 @@ The following operating systems are supported:
 - MacOS
 - Windows
 
-Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download appropriate installation file.
-
 ## Installation
 
-1. Unpack installation archive to `$HOME` directory.
-2. Add `$HOME/.javaman` to `$PATH` environment variable for availability to run `javaman` user (system) wide.
+1. Check [Releases](https://github.com/rpanchyk/javaman/releases) page to download appropriate file.
+2. Unpack installation archive to `$HOME` directory.
+3. Add `$HOME/.javaman` to `$PATH` environment variable for availability to run `javaman` user (system) wide.
 
 ## Configuration
 
