@@ -29,7 +29,7 @@ File `$HOME/.javaman/config.toml` contains many configuration options.
 
 ```toml
 # List of SDK providers.
-vendors = ["microsoft"]
+vendors = ["corretto", "microsoft"]
 
 # Directory where SDK archives are downloaded.
 # Can be absolute or relative path.
