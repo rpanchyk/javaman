@@ -15,15 +15,18 @@ import (
 
 type FilteredListFetcher struct {
 	config      *models.Config
+	listFilter  *models.ListFilter
 	listFetcher ListFetcher
 }
 
 func NewFilteredListFetcher(
 	config *models.Config,
+	listFilter *models.ListFilter,
 	listFetcher ListFetcher) *FilteredListFetcher {
 
 	return &FilteredListFetcher{
 		config:      config,
+		listFilter:  listFilter,
 		listFetcher: listFetcher,
 	}
 }
@@ -84,14 +87,26 @@ func (f FilteredListFetcher) filterSdks(sdks []models.Sdk) ([]models.Sdk, error)
 	})
 	//fmt.Printf("Sorted sdks: %v\n", sdks)
 
+	maxCount := f.config.ListLimit
+	if f.listFilter.Number > 0 {
+		maxCount = f.listFilter.Number
+	}
+	filterVersion := ""
+	if f.listFilter.Version != "" {
+		filterVersion = f.listFilter.Version
+	}
+
 	res := make([]models.Sdk, 0)
 	count := 0
 	ver := ""
 	for _, sdk := range sdks {
+		if filterVersion != "" && strings.Index(sdk.Version, filterVersion) == -1 {
+			continue
+		}
 		if ver != sdk.Version {
 			count++
 		}
-		if count > f.config.ListLimit {
+		if count > maxCount {
 			break
 		}
 
