@@ -1,5 +1,5 @@
 # List of SDK providers.
-vendors = ["corretto", "microsoft"]
+vendors = ["corretto", "microsoft", "openjdk"]
 
 # Directory where SDK archives are downloaded.
 # Can be absolute or relative path.

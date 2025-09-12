@@ -92,13 +92,18 @@ func initListFetcher() {
 	fetchers := make([]lister.ListFetcher, 0)
 	for _, vendor := range globals.Config.Vendors {
 		switch strings.ToLower(strings.TrimSpace(vendor)) {
+		case "corretto":
+			fetchers = append(fetchers, vendors.NewAmazonListFetcher(
+				&globals.Config,
+				httpClient,
+			))
 		case "microsoft":
 			fetchers = append(fetchers, vendors.NewMicrosoftListFetcher(
 				&globals.Config,
 				httpClient,
 			))
-		case "corretto":
-			fetchers = append(fetchers, vendors.NewAmazonListFetcher(
+		case "openjdk":
+			fetchers = append(fetchers, vendors.NewOpenJdkListFetcher(
 				&globals.Config,
 				httpClient,
 			))

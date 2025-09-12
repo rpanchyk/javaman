@@ -10,11 +10,19 @@ The aim is to allow a quick and convenient management of Java workspace environm
 
 ## Prerequisites
 
-The following operating systems are supported:
+The following operating systems (OS) are supported:
 
 - Linux
 - MacOS
 - Windows
+
+The following SDK vendors (providers) are supported:
+
+- [Amazon Corretto](https://aws.amazon.com/corretto)
+- [Microsoft](https://www.microsoft.com/openjdk)
+- [OpenJDK](https://openjdk.org)
+
+The list can be expanded.
 
 ## Installation
 
@@ -28,7 +36,7 @@ File `$HOME/.javaman/config.toml` contains many configuration options.
 
 ```toml
 # List of SDK providers.
-vendors = ["corretto", "microsoft"]
+vendors = ["corretto", "microsoft", "openjdk"]
 
 # Directory where SDK archives are downloaded.
 # Can be absolute or relative path.
@@ -104,7 +112,7 @@ SDK has been installed: /home/user/.javaman/sdks/microsoft-21.0.3
 User environment is set to microsoft-21.0.3 version as default
 ```
 
-4. (_Important!_) Restart terminal to apply changes.
+4. (_Important!_) Reopen terminal to pick changes up.
 
 5. Check versions list again to see the asterisk near the default one with `javaman list` command.
 
