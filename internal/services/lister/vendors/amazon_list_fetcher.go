@@ -9,6 +9,7 @@ import (
 
 	"github.com/rpanchyk/javaman/internal/clients"
 	"github.com/rpanchyk/javaman/internal/models"
+	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type AmazonListFetcher struct {
@@ -27,7 +28,10 @@ func NewAmazonListFetcher(
 }
 
 func (f AmazonListFetcher) Fetch() ([]models.Sdk, error) {
-	fmt.Printf("Fetching corretto SDKs ... ")
+	fmt.Printf("Fetching corretto SDKs ...")
+	pb := utils.NewDotProgressBar()
+	pb.Start()
+	defer pb.Stop()
 
 	status, response, err := f.httpClient.Get("https://raw.githubusercontent.com/corretto/corretto-downloads/refs/heads/main/latest_links/version-info.json")
 	if err != nil {
@@ -122,6 +126,6 @@ func (f AmazonListFetcher) Fetch() ([]models.Sdk, error) {
 		}
 	}
 
-	fmt.Println("OK")
+	fmt.Println(" OK")
 	return sdks, nil
 }

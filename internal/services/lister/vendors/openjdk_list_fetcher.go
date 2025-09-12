@@ -8,6 +8,7 @@ import (
 
 	"github.com/rpanchyk/javaman/internal/clients"
 	"github.com/rpanchyk/javaman/internal/models"
+	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type OpenJdkListFetcher struct {
@@ -26,7 +27,10 @@ func NewOpenJdkListFetcher(
 }
 
 func (f OpenJdkListFetcher) Fetch() ([]models.Sdk, error) {
-	fmt.Printf("Fetching openjdk SDKs ... ")
+	fmt.Printf("Fetching openjdk SDKs ...")
+	pb := utils.NewDotProgressBar()
+	pb.Start()
+	defer pb.Stop()
 
 	status, response, err := f.httpClient.Get("https://jdk.java.net/archive/")
 	if err != nil {
@@ -84,6 +88,6 @@ func (f OpenJdkListFetcher) Fetch() ([]models.Sdk, error) {
 		}
 	}
 
-	fmt.Println("OK")
+	fmt.Println(" OK")
 	return sdks, nil
 }

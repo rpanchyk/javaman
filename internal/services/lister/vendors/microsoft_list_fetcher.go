@@ -8,6 +8,7 @@ import (
 
 	"github.com/rpanchyk/javaman/internal/clients"
 	"github.com/rpanchyk/javaman/internal/models"
+	"github.com/rpanchyk/javaman/internal/utils"
 )
 
 type MicrosoftListFetcher struct {
@@ -26,7 +27,10 @@ func NewMicrosoftListFetcher(
 }
 
 func (f MicrosoftListFetcher) Fetch() ([]models.Sdk, error) {
-	fmt.Printf("Fetching microsoft SDKs ... ")
+	fmt.Printf("Fetching microsoft SDKs ...")
+	pb := utils.NewDotProgressBar()
+	pb.Start()
+	defer pb.Stop()
 
 	urls := []string{
 		"https://learn.microsoft.com/en-us/java/openjdk/download",
@@ -104,6 +108,6 @@ func (f MicrosoftListFetcher) Fetch() ([]models.Sdk, error) {
 		}
 	}
 
-	fmt.Println("OK")
+	fmt.Println(" OK")
 	return sdks, nil
 }
